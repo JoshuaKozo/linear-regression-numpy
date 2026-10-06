@@ -69,3 +69,30 @@ beta_gd, losses = fit_gradient_descent(Xb_train, y_train)
 print("Starting MSE:", round(losses[0], 1))
 print("Final MSE:   ", round(losses[-1], 1))
 print("Biggest difference from normal equation:", round(np.max(np.abs(beta_gd - beta_normal)), 4))
+
+
+#now lets check that the models are actually working with stikit-learn's linear regression
+from sklearn.linear_model import LinearRegression
+
+sk_model = LinearRegression().fit(X_train, y_train)
+beta_sk = np.concatenate([[sk_model.intercept_], sk_model.coef_])
+
+#comparison of methods
+methods = ["Normal equation", "Gradient descent", "scikit-learn"]
+betas = [beta_normal, beta_gd, beta_sk]
+
+# mean squared error calculation
+def mse(y, y_pred):
+    return np.mean((y - y_pred) ** 2)
+
+# R^2 calculation
+def r_squared(y, y_pred):
+    return 1 - np.sum((y - y_pred) ** 2) / np.sum((y - y.mean()) ** 2)
+
+
+for i in range(len(methods)):
+    y_pred = Xb_test @ betas[i]
+    print(methods[i], "| test MSE:", round(mse(y_test, y_pred), 1), "| test R^2:", round(r_squared(y_test, y_pred), 3))
+
+print("Normal equation vs scikit-learn:", np.max(np.abs(beta_normal - beta_sk)))
+print("Gradient descent vs scikit-learn:", np.max(np.abs(beta_gd - beta_sk)))
