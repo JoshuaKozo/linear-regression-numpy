@@ -71,7 +71,7 @@ print("Final MSE:   ", round(losses[-1], 1))
 print("Biggest difference from normal equation:", round(np.max(np.abs(beta_gd - beta_normal)), 4))
 
 
-#now lets check that the models are actually working with stikit-learn's linear regression
+#Check that the models are actually working with stikit-learn's linear regression
 from sklearn.linear_model import LinearRegression
 
 sk_model = LinearRegression().fit(X_train, y_train)
@@ -94,5 +94,8 @@ for i in range(len(methods)):
     y_pred = Xb_test @ betas[i]
     print(methods[i], "| test MSE:", round(mse(y_test, y_pred), 1), "| test R^2:", round(r_squared(y_test, y_pred), 3))
 
-print("Normal equation vs scikit-learn:", np.max(np.abs(beta_normal - beta_sk)))
-print("Gradient descent vs scikit-learn:", np.max(np.abs(beta_gd - beta_sk)))
+print(f"Normal equation vs scikit-learn: {np.max(np.abs(beta_normal - beta_sk)):.1e}")
+
+#the script stops with an error if either method disagrees with scikit-learn
+assert np.allclose(beta_normal, beta_sk), "Normal equation does not match scikit-learn"
+assert np.allclose(beta_gd, beta_sk, atol=0.01), "Gradient descent does not match scikit-learn"
