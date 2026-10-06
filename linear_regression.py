@@ -20,3 +20,23 @@ y_train = y[train]
 y_test = y[test]
 print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 
+#standardize training data
+mean = X_train.mean(axis=0)
+std = X_train.std(axis=0)
+
+X_train = (X_train - mean) / std
+X_test = (X_test - mean) / std
+
+
+def add_intercept(X):
+    # Put a column of 1s in front so beta[0] acts as the intercept
+    return np.column_stack([np.ones(len(X)), X])
+
+Xb_train = add_intercept(X_train)
+Xb_test = add_intercept(X_test)
+
+print(X_train.mean(axis=0).round(3))
+print(X_train.std(axis=0).round(3))
+print(Xb_train.shape, Xb_test.shape)
+
+
