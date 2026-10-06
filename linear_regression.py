@@ -124,4 +124,3 @@ ax2.legend()
 
 plt.tight_layout()
 plt.savefig("results.png", dpi=150)
-plt.show()
