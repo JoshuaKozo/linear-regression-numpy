@@ -51,3 +51,21 @@ print("Intercept:", beta_normal[0].round(2), "| Training mean of y:", y_train.me
 y_pred = Xb_test @ beta_normal
 print("Predicted:", y_pred[:5].round(1))
 print("Actual:   ", y_test[:5])
+
+# Gradient descent where we start at coefficents = zero and figure out best way to improve error using gradient
+def fit_gradient_descent(X, y, learning_rate=0.1, n_iters=5000):
+    n = len(y)
+    beta = np.zeros(X.shape[1])
+    losses = []
+    for i in range(n_iters):
+        errors = X @ beta - y
+        losses.append(np.mean(errors ** 2))
+        gradient = (2 / n) * X.T @ errors
+        beta = beta - learning_rate * gradient
+    return beta, losses
+
+beta_gd, losses = fit_gradient_descent(Xb_train, y_train)
+
+print("Starting MSE:", round(losses[0], 1))
+print("Final MSE:   ", round(losses[-1], 1))
+print("Biggest difference from normal equation:", np.max(np.abs(beta_gd - beta_normal)))
