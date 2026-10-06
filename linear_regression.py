@@ -2,6 +2,7 @@
 import random
 import numpy as np
 from sklearn.datasets import load_diabetes
+import matplotlib.pyplot as plt
 
 X, y = load_diabetes(return_X_y=True) # X = 442 patients and 10 columns, y = diabetes progression score
 
@@ -95,7 +96,32 @@ for i in range(len(methods)):
     print(methods[i], "| test MSE:", round(mse(y_test, y_pred), 1), "| test R^2:", round(r_squared(y_test, y_pred), 3))
 
 print(f"Normal equation vs scikit-learn: {np.max(np.abs(beta_normal - beta_sk)):.1e}")
+print(f"Gradient descent vs scikit-learn: {np.max(np.abs(beta_gd - beta_sk)):.1e}")
 
 #the script stops with an error if either method disagrees with scikit-learn
 assert np.allclose(beta_normal, beta_sk), "Normal equation does not match scikit-learn"
 assert np.allclose(beta_gd, beta_sk, atol=0.01), "Gradient descent does not match scikit-learn"
+
+#results plotting convergence and predicted vs actual
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 4.5))
+
+#convergence plot
+ax1.plot(range(1, len(losses) + 1), losses)
+ax1.set_xscale("log")
+ax1.set_xlabel("Iteration (log scale)")
+ax1.set_ylabel("Training MSE")
+ax1.set_title("Gradient descent convergence")
+
+#predicted vs actual
+y_pred_test = Xb_test @ beta_normal
+ax2.scatter(y_test, y_pred_test, alpha=0.6)
+lims = [y_test.min(), y_test.max()]
+ax2.plot(lims, lims, "k--", label="Perfect prediction")
+ax2.set_xlabel("Actual")
+ax2.set_ylabel("Predicted")
+ax2.set_title("Test set: predicted vs. actual")
+ax2.legend()
+
+plt.tight_layout()
+plt.savefig("results.png", dpi=150)
+plt.show()
