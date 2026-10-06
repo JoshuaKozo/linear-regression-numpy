@@ -68,4 +68,4 @@ beta_gd, losses = fit_gradient_descent(Xb_train, y_train)
 
 print("Starting MSE:", round(losses[0], 1))
 print("Final MSE:   ", round(losses[-1], 1))
-print("Biggest difference from normal equation:", np.max(np.abs(beta_gd - beta_normal)))
+print("Biggest difference from normal equation:", round(np.max(np.abs(beta_gd - beta_normal)), 4))
