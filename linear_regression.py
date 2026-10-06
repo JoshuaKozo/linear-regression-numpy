@@ -3,7 +3,7 @@ import random
 import numpy as np
 from sklearn.datasets import load_diabetes
 
-X, y = load_diabetes(return_X_y=True) # X = 442 paitents and 10 columns, y = diabetes progression score
+X, y = load_diabetes(return_X_y=True) # X = 442 patients and 10 columns, y = diabetes progression score
 
 #shuffling the diabetes data, reproducible b/c of seed.
 random.seed(0)
@@ -19,3 +19,4 @@ X_test = X[test]
 y_train = y[train]
 y_test = y[test]
 print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
+
