@@ -1,4 +1,4 @@
-# Linear Regression from Scratch
+# Linear Regression in NumPy
 
 This project fits an ordinary least squares (OLS) regression in two ways using NumPy: directly solving the normal equation for an exact answer and iteratively using gradient descent. I then compared and validated both methods against scikit-learn's `LinearRegression`.
 
